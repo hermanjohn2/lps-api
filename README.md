@@ -1,1 +1,1 @@
-# LPS: Server
+# LPS API
