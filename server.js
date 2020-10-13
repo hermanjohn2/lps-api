@@ -1,7 +1,8 @@
 const express = require('express'),
 	morgan = require('morgan'),
 	mongoose = require('mongoose'),
-	dbConfig = require('./config/database.config');
+	dbConfig = require('./config/database.config'),
+	routes = require('./routes');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -9,6 +10,9 @@ const port = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(morgan('tiny'));
+
+// Routes
+app.use(routes);
 
 // Database connection
 mongoose.connect(dbConfig.url, {
@@ -20,10 +24,6 @@ mongoose.connect(dbConfig.url, {
 		console.log('Unable to connect to database. Exiting...', err);
 		process.exit();
 	});
-
-app.get('/', (req, res) => {
-	res.json('Welcome to the LPS server');
-});
 
 app.listen(port, () => {
 	console.log(`🌎 ==> Listening on port ${port}.`);
