@@ -1,8 +1,10 @@
 const express = require('express'),
 	morgan = require('morgan'),
 	mongoose = require('mongoose'),
-	dbConfig = require('./config/database.config'),
+	dbConfig = require('./config/database-config'),
 	routes = require('./routes');
+
+const userTest = require('./test/user-entry-test');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -25,6 +27,8 @@ mongoose.connect(dbConfig.url, {
 		process.exit();
 	});
 
+userTest();
+
 app.listen(port, () => {
-	console.log(`🌎 ==> Listening on port ${port}.`);
+	console.log(`🌎 ==> Listening on port ${port}`);
 });
