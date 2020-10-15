@@ -1,5 +1,6 @@
 const mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
+	uniqueValidator = require('mongoose-unique-validator'),
 	bcrypt = require('bcrypt'),
 	saltRounds = 10;
 
@@ -11,7 +12,7 @@ const UserSchema = new Schema({
 	email: {
 		type: mongoose.SchemaTypes.Email,
 		required: [true, 'User email required'],
-		createIndexes: { unique: true }
+		unique: true
 	},
 	password: {
 		type: String,
@@ -20,13 +21,19 @@ const UserSchema = new Schema({
 	username: {
 		type: String,
 		required: [true, 'Username required'],
-		createIndexes: { unique: true }
+		unique: true
 	},
-	leagues: []
+	leagues: [],
+	createdAt: {
+		type: Date,
+		default: Date.now()
+	}
 });
 
+UserSchema.plugin(uniqueValidator);
+
 UserSchema.pre('save', function (next) {
-	var user = this;
+	const user = this;
 
 	// only hash the password if it is new or has been modified
 	if (!user.isModified('password')) return next();
